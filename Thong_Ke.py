@@ -1,4 +1,10 @@
 import os
+import re 
+def remove_html_tags(text):
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
+
+    return text.strip()
 
 def analyze_email_data(folder_path, label):
     # Lấy danh sách tất cả các file trong thư mục
@@ -19,6 +25,9 @@ def analyze_email_data(folder_path, label):
     
     if len(parts) == 2:
         header, body = parts
+
+        body = remove_html_tags(body)
+        
         print(f"--- Trích xuất Body mẫu từ {label} ---")
         # In thử 150 ký tự đầu tiên của phần Body
         print(body[:150] + "...\n(Đã cắt bớt)\n")
