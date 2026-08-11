@@ -1,5 +1,6 @@
 import numpy as np
-from library.naive_bayes import MultinomialNaiveBayesFromScratch
+from library.naive_bayes import MultinomialNaiveBayesFromScratch 
+from Evaluation import ModelEvaluation
 
 X_train = np.load("data/X_train.npy")
 Y_train= np.load("data/y_train.npy")
@@ -31,15 +32,10 @@ print("Train model thanh cong!")
 y_val_pred = model.predict(X_val)
 y_test_pred = model.predict(X_test)
 
+evaluation = ModelEvaluation(Y_test, y_test_pred)
+evaluation.print_result("TEST")
 
-print("\n20 prediction dau tien cua Validation:")
-print(y_val_pred[:20])
+val_evaluation = ModelEvaluation(Y_val, y_val_pred)
+val_evaluation.print_result("VALIDATION")
 
-print("\n20 nhan that cua Validation:")
-print(Y_val[:20])
 
-print("\n20 prediction dau tien cua Test:")
-print(y_test_pred[:20])
-
-print("\n20 nhan that cua Test:")
-print(Y_test[:20])
