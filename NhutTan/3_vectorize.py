@@ -21,11 +21,13 @@ class BieuDienBagOfWords:
     def chuyen_file_thanh_vector(self, files_csv):
         """Chuyen file thanh X va y"""
         file_paths = []
+        labels = []
         with open(files_csv, 'r', encoding='utf-8') as f:
             reader = csv.reader(f)
             next(reader) # bo qua tieu de
             for row in reader:
                 file_paths.append(row[0])
+                labels.append(row[1])
             
         n_samples = len(file_paths)
         
@@ -41,23 +43,20 @@ class BieuDienBagOfWords:
             # Gọi hàm xu_ly_email để dọn rác HTML (xóa head, style, script) và lấy danh sách chữ
             tokens = self.preprocessor.xu_ly_email(file_path)
             
-            # 2. Tao vector dem
+            # 2. Tao vector dem (Bag of Words)
             for token in tokens:
-                # Lay index cua tu, hoac <UNK>
+                # Lay index cua tu (chi dem tu co tỏng vocabulary)
                 if token in self.vocab:
                     idx = self.vocab[token]
-                else:
-                    idx = self.unk_idx
-                    
-                X[i, idx] += 1
-                
+                    X[i, idx] += 1
+
             # 3. Gan nhan
-            if "/spam/" in file_path or "\\spam\\" in file_path:
+            if labels[i] == "spam":
                 y[i] = 1
             else:
                 y[i] = 0
-                
-        return X, y
+
+        return X,y
 
 if __name__ == "__main__":
     vectorizer = BieuDienBagOfWords(vocab_json="../data/vocabulary.json")
