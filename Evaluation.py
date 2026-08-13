@@ -121,3 +121,4 @@ class ModelEvaluation:
             f"Error Rate : "
             f"{self.error_rate() * 100:.2f}%"
         )
+
